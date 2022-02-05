@@ -1,0 +1,25 @@
+\section{Mögliche Erweiterung}
+
+Wenn für $U1$ ein Operationsverstärker mit Disable/Shutdown Pin verwendet wird, können mehrere Lasten mit 
+verschiedenen $I_{L,max}$ parallel geschaltet werden. 
+Es wäre nur eine Referenz nötig. 
+So kann in einem Gerät eine breitbandige genaue 
+(nach Abschnitt \ref{sec:Grenzen}) Stromsenke realisiert werden. 
+Beispiel: $I_{L1,max} = \SI{100}{m\ampere}, I_{L2,max} = \SI{1}{\ampere}, I_{L3,max} = \SI{10}{\ampere}$.\\
+
+Wenn nun mehrere Spannungsreferenzen zur Verfügung stehen, können nach dem Kirchhoffschen-Knotenpunktsatz auch \grqq Mischgrößen\grqq{} 
+gebaut werden.
+Beispiel: $I_{L,max} = \SI{1,2}{\ampere}$ ($\SI{1}{\ampere}$ und $\SI{200}{m\ampere}$)\\
+
+
+Wie schon im Artikel angedeutet, wäre eine Erweiterungsmöglichkeit, andere Fehlerarten der Schaltung 
+mit einem Mikrocontroller zu verhindern.
+Informationswerte, wie aktueller Stromfluss und Spannung, können an einem Display angezeigt werden.
+So könnte beispielsweise eine Temperaturüberwachung am Kühlkörper realisiert werden.
+Bei überschreiten der Grenztemperatur kann der Shutdown des OP`s genutzt werden, um den MOSFET hochohmig zu schalten.
+Mit einem weiteren ADC Eingang, über einen Spannungsteiler gemessen, kann $P_{Q1} = (U_{L} - R1 \cdot I_{L}) \cdot I_{L}$ bzw. 
+$P_{L} = U_{L} \cdot I_{L}$ berechnet werden. 
+Ein akustisches oder visuelles Signal kann so vor den bevorstehenden Überschreitungen von 
+$U_{DS,Q1}$, $I_{D,Q1}$ und/oder $P_{tot,Q1}$, den Nutzer warnen.\\
+
+Wer ein passendes Analogmessinstrument hat, kann die Anzeige auch im Retrostil bauen.

@@ -1,0 +1,137 @@
+\section{Schaltung Auslegen}
+
+Falls Sie die Schaltung zusammenbauen möchten sollte der nachfolgende Teil einmal vollständig gelesen werden.
+Sie legen Ihre Präferenzen fest, berechnen die Werte und suchen dann passende Bauteile heraus.
+\newline
+
+Wenn der MOSFET ($Q1$) im Betrieb hochohmig geschaltet werden soll, wird für die Regelung ($U1$), 
+ein sogenannter Rail to Rail Operationsverstärker benötigt. 
+Diese Art von OP`s, können ihre Ausgangsspannung bis nah an die Versorgungsspannung heran durchschalten.
+
+Bei der Versorgung des OP`s muss darauf geachtet werden, dass das mögliche Ausgangspotential größer ist als $U_{GS(th),max}$.
+$U_{GS(th),max}$ ist die maximale Gate-Source Schwellspannung (Englisch: Gate-Source Threshold Voltage) des MOSFET. 
+Beim unterschreiten dieser, kann der MOSFET nicht vollständig durchschalten.
+Bei einer Versorgungsspannung von \SI{5}{\volt} empfehlen sich sogenannte Logic-Level MOSFET`s 
+(IRL(\textit{X}) \cite{LL_MOSFET}).
+
+Neben diesem Wert sollte ebenfalls auf $U_{DS}$ (Drain-Source Durchbruch Spannung) geachtet werden. Diese bestimmt die 
+spätere maximale Spannung der Last ($U_{L,max}$)\footnote{In Abb.\ref{sch:Grundschaltung} Spannung zwischen +Load und -Load}. 
+Lesende, die mit dem Kirchhoffschen-Maschengesetz vertraut sind werden sagen, dass das noch nicht ganz stimmt.
+Die Masche für die maximale Spannung ist:
+\begin{equation}
+	U_{L,max} = (I_{L} \cdot R1) + U_{DS}
+	\label{eq:U_Lmax}
+\end{equation}
+
+Wenn bei dem Einschalten von einem Laststrom $I_{L} = \SI{0}{\ampere}$ ausgegangen wird, wird der erste Term aus Formel \ref {eq:U_Lmax} 
+$= 0$ und $U_{L,max}$ ist somit gleich $U_{DS}$. 
+
+
+Kleine Anmerkung: Wer ein bisschen bastelt, hat bestimmt ein IRFP450 \cite{IRFP450} herumliegen. 
+Der eignet sich sehr gut: $U_{GS(th),max} = \SI{4}{\volt}$, $U_{DS} = \SI{500}{\volt}$, $I_{D} = \SI{14}{\ampere}$ 
+und $R_{DS(on)} = \SI{0,4}{\ohm}$ (Bedingung Beachten \cite{IRFP450}).
+
+Der Shunt-Widerstand $R1$ sollte allgemein nicht zu klein ausfallen.
+Bei kleiner Loop (1)- und Referenzspannung, können elektromagnetische Störungen von Außen überwiegen.
+
+Die minimale ohmsche Last die simuliert werden kann, ist:
+\begin{equation}
+	R_{L,min} = R1 + R_{DS(on)}
+	\label{eq:R_Lmin}
+\end{equation}
+
+%\begin{equation}
+%	P_{R1,max} = I_{L,max}^2  \cdot R1
+%	\label{eq:P_R1max}
+%\end{equation} 
+
+\subsection{Beispiel} 
+\label{sec:Bsp}
+Nehmen wir ein IRFP450 \cite{IRFP450}, $R1 = \SI{100}{m\ohm}$ und $U_{U1} = U_{Ref}= \SI{12}{\volt}$.
+Wir legen $I_{L´,max} = \SI{7}{\ampere}$, $U_{L,max} = \SI{20}{\volt}$ und $U1$ als Rail to Rail Operationsverstärker fest.
+
+Somit ergeben sich für $P_{R1,max}$ und $U_{U1+,max}$: 
+\begin{equation}
+	P_{R1,max} = I_{L,max}^2  \cdot R1 = (\SI{7}{\ampere})^2 \cdot \SI{0,1}{\ohm} = \SI{4,9}{\watt}
+\end{equation}
+\begin{multline}
+	\begin{split}
+		U_{U1+,max} &= I_{L´,max} \cdot R1 = \SI{7}{\ampere} \cdot \SI{0,1}{\ohm} = \SI{0,7}{\volt} \\
+		&= U_{R1,max}
+	\end{split} 
+\end{multline}
+
+
+Bei der Referenz legen wir $R3 = \SI{10}{k\ohm}$ und $R2 = \SI{100}{k\ohm}$ fest. Formel \ref{eq:UOp+} 
+%($R23$ siehe Formel \ref{eq:R23}) 
+wird nach $R4$ umgestellt:
+\begin{multline}
+	\begin{split}
+		R4 &= \biggl( \frac{U_{Ref} \cdot \frac{R2 \cdot R3}{R2 + R3}}{U_{U1+,max}}\biggr) - \frac{R2 \cdot R3}{R2 + R3}\\
+		&= \biggl( \frac{\SI{12}{\volt} \cdot \SI{9,09}{k\ohm}}{\SI{0,7}{\volt}}\biggr) - \SI{9,09}{k\ohm} = \SI{146,73}{k\ohm}
+	\end{split}
+\end{multline}
+
+Einen Widerstand mit $R = \SI{146,73}{k\ohm}$ wird es wahrscheinlich nirgends zu kaufen geben. 
+Nach der E 96-Reihe (Nach DIN 41426 \cite{E-Reihen}), ist der nächste nähere Wert $147 k\Omega$. 
+Durch diesen anderen Wert ergibt sich $I_{L,max} = \SI{6,988}{\ampere}$.
+
+
+\subsection{EMV-Aspekte} 
+\label{sec:EMV}
+Eine Leiterschleife, senkrecht von einem magnetischen zeitlich-veränderlichen Fluss durchströmt, induziert eine elektrische 
+Spannung. 
+Die induzierte elektrische Spannung ist von der Fläche und der  magnetischen Flussdichte abhängig. Um diesen Störeinfluss 
+%(wie im Abschnitt \ref{sec:Schaltung} angesprochen) 
+zu minimieren, sollte der Loop 1 (Abb. \ref{sch:Grundschaltung}) möglichst kurz und eine kleine Innenfläche vorweisen. 
+Bei Anwendung in Bereichen mit großen Störeinflüssen sollte der Loop 1 zusätzlich geschirmt 
+werden (Bsp: Innenleiterbahn oder $\mu$-Metall). 
+%Um Störeinflüsse an der Referenz zu minimieren sollte ein Kondensator parallel zu $R2$ möglichst nah am  Operationsverstärker 
+%eingebracht werden.
+Weniger kritisch ist die Referenz am Eingang $U1_{+}$. 
+Hier sollte dennoch ein Kondensator parallel zu $R2$, möglichst nah am Operationsverstärker, 
+eingebracht und lange Leiterbahnen/Zuleitungen vermieden werden.
+
+\subsection{Temperaturabhängigkeit/-eigenschaft}
+
+Die Temperatureigenschaften von dem MOSFET $Q1$ werden nicht beachtet, da dieser gesteuert wird. Die Temperaturabhängigkeit ist 
+wesentlich von der Referenzspannung $U_{U1+}$ und dem Shunt $R1$ abhängig. Um den maximalen Fehler zu berechnen ist der TCR-Wert 
+(Temperature Coefficient of Resistances), in [PPM/°C], wichtig. 
+Dieser beschreibt die Widerstandsänderung aufgrund von Temperaturänderung. 
+Für Widerstände gilt: (\cite{TCR_rechnen}, Seite 23)
+
+\begin{equation}
+	\label{eq:TCR}
+	\Delta R_{max} = \Delta R + (T_{R,max} - \SI{25}{\celsius}) \cdot TCR_{R} \cdot10^{-4}
+\end{equation}
+
+\begin{table}[h!]
+	\centering
+	\caption{Beschreibung zur Formel \ref{eq:TCR}}
+	\label{tab:Beschreibung_TCR}
+	\normalsize
+	\begin{tabular}{l|l}
+		Term & Beschreibung \\
+		\hline
+		$\Delta R_{max}$& Resultierende maximale Toleranz[\%]\\
+		$\Delta R$		& Widerstandstoleranz [\%] \\
+		$T_{R,max}$		& Max. Temperatur am/im Widerstand [°C]\\
+		$TCR_{R}$		& TCR-Wert des Widerstandes [PPM/°C]\\
+	\end{tabular}
+\end{table}
+
+Um den Temperatureinfluss zu minimieren, sollten Widerstände konstant/nah bei \SI{25}{\celsius} betrieben werden. 
+Der Shunt-Widerstand wird im Betrieb gegebenenfalls mit viel Leistung belastet. 
+Hierbei sollte für ausreichend Kühlung gesorgt 
+und bei der Fehlerrechnung der maximale Fehler nach Formel \ref{eq:TCR} beachtet werden.
+Das Gehäuse des MOSFET sollte groß gewählt werden, damit die gegebenenfalls hohe anfallende 
+Leistung, mit geringem thermischen Widerstand an den Kühlkörper abgegeben werden kann.
+Die Kühlkörperberechnung/Auslegung ist nicht Teil dieses Artikels. 
+Unter Bedingungen\footnote{$P_{L} \approx \SI{72}{\watt}$, \SI{30}{\second} Anzeit, \SI{10}{\minute} Auszeit} 
+genügt ein relativ kleiner Kühlkörper von $\approx \SI{96,2}{c\meter^3}$.
+Dabei wir die anfallende Wärme primär im Material gespeichert. 
+Die Abgabe der gespeicherten Energie erfolgt größtenteils während der Auszeit.\\
+
+Die restliche Schaltung ist thermisch und räumlich von diesen zwei zu kühlenden Bauteilen zu trennen.
+Im Allgemeinen hat ein Schaltung eine höhere Genauigkeit, wenn diese bei konstanter und 
+geringer Temperatur betrieben wird.

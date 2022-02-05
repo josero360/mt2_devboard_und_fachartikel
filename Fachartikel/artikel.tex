@@ -1,0 +1,68 @@
+\documentclass[10pt, journal]{IEEEtran}			% draftcls, http://vesta.informatik.rwth-aachen.de/ftp/pub/mirror/ctan/macros/latex/contrib/IEEEtran/IEEEtran_HOWTO.pdf
+\setlength{\parindent}{0em} 					% Absatzeinrücken verhindern
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+%\usepackage{cmbright}							% Schriftart https://tug.org/FontCatalogue/
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{mathtools}
+\setlength\abovedisplayshortskip{-5pt}  		% Kopfabstand von Formeln	
+\setlength\abovedisplayskip{+7pt} 	
+\setlength\belowdisplayskip{+7pt} 	
+\usepackage{siunitx}							% Si Einheiten
+\usepackage{graphicx}
+\usepackage{multirow}  							% Multirow in Tabellen
+\usepackage{arydshln}  							% Punkt/strich Linen in Tabellen
+\usepackage{pdflscape} 							% Seite kann mit landscape in Querformat dargestellt werde
+\usepackage{caption}
+\usepackage{here}
+\usepackage{graphicx}  							% Tab neben Bilder
+\usepackage{booktabs}  							% Tab neben Bilder
+\usepackage{cite}								% IEEE Zitate
+
+
+\begin{document}
+	\title{Variable Stromsenke\\Messtechnik 2, Fachartikel}
+	\author{Johannes Rothe} 
+	\markboth{Fachartikel Variable Stromsenke}{Rothe}
+	\maketitle 
+
+	\input{section/Einführung}
+	
+	\input{section/Schaltung}
+	
+	\input{section/Schaltung Auslegen}
+	
+	\input{section/Simulation}
+	
+	\input{section/Grenzen}
+	
+	\input{section/Erweiterung}
+	
+	\begin{thebibliography}{1}		
+		\bibitem{LL_MOSFET}	
+		Falk (Username mikrocontroller.net), \emph{MOSFET-Übersicht}\hskip 1em plus
+		0.5em minus 0.4em \relax https://www.mikrocontroller.net/articles/MOSFET-Übersicht, 07.02.2021, Letzter Aufruf 23.04.2021
+		
+		\bibitem{IRFP450}	
+		Vishay Siliconix, \emph{Datasheet Power MOSFET, IRFP450, SiHFP450}\hskip 1em plus
+		0.5em minus 0.4em \relax https://www.vishay.com/docs/91233/91233.pdf, 16.06.2008, Letzter Aufruf 23.04.2021
+		
+		\bibitem{IRFP250}
+		Vishay Siliconix, \emph{Datasheet Power MOSFET, IRFP240, SiHFP240}\hskip 1em plus
+		0.5em minus 0.4em \relax https://www.vishay.com/docs/91210/91210.pdf, 21.03.2011, Letzter Aufruf 19.05.2021
+		
+		\bibitem{LTC2057}
+		Analog Devices, \emph{LTC2057: High Voltage, Low Noise Zero-Drift Operational Amplifier Data Sheet} \hskip 1em plus
+		0.5em minus 0.4em \relax https://www.analog.com/media/en/technical-documentation/data-sheets/2057f.pdf, Letzter Aufruf 16.04.2021
+		
+		\bibitem{E-Reihen}
+		Manfred Hein, \emph{DIE IEC- WERTETABELLEN} \hskip 1em plus
+		0.5em minus 0.4em \relax http://www.heinffm.de/0199d9924f0e9e80e/0199d9924f0eb3f3b/0199d992cf1014103/, Letzter Aufruf 05.05.2021
+		
+		\bibitem{TCR_rechnen}
+		Prof. Dr. Wolfgang Matthes, \emph{Widerstände} \hskip 1em plus
+		0.5em minus 0.4em \relax http://www.controllersandpcs.de/lehrarchiv/pdfs/elektronik/pass01\_01x.pdf, Letzter Aufruf 11.05.2021
+		
+	\end{thebibliography}
+\end{document}
